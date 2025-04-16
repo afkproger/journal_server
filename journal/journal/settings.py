@@ -27,6 +27,8 @@ SECRET_KEY = 'django-insecure-wv=fx2lecl(h9j30dswa0)^7k2!-!a&)+t5y$eo(mp4u0h+uom
 DEBUG = True
 AUTH_USER_MODEL = 'server.User'
 ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True 
+CORS_ALLOW_CREDENTIALS = True #CORS для cookies
 
 
 # Application definition
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'server.apps.ServerConfig',
+    'corsheaders',
     'rest_framework',
 ]
 
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'server.middleware.JWTCookieMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'journal.urls'
