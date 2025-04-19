@@ -4,14 +4,19 @@ from django.utils.deprecation import MiddlewareMixin
 
 class JWTCookieMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        access_token = request.COOKIES.get('access')
-
-        if request.path.startswith('/api/v1/register') or request.path.startswith('/api/v1/auth'):
+        open_paths = ['/api/v1/register', '/api/v1/auth', '/api/token']
+        if any(request.path.startswith(path) for path in open_paths):
             return None
-        
-        if access_token:
-            request.META['HTTP_AUTHORIZATION'] = f'Bearer {access_token}'
+        if request.method == 'OPTIONS':
+            return None
 
-        if not access_token:
-            raise AuthenticationFailed('Authorization token missing')
+        # Проверяем наличие заголовка Authorization
+        auth_header = request.META.get('HTTP_AUTHORIZATION')
+        
+        if not auth_header:
+            raise AuthenticationFailed('Authorization header missing')
+        
+        # Дополнительно можно проверить формат (Bearer <token>)
+        if not auth_header.startswith('Bearer '):
+            raise AuthenticationFailed('Invalid token format. Use "Bearer <token>"')
 

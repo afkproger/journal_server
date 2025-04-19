@@ -13,18 +13,14 @@ class LoginApiView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
-            refresh_token = str(refresh)
             res = Response({
-                "id": user.id,
-                "status": True,
-                'access':access_token,
-                "refresh": refresh_token
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
                             }, status=status.HTTP_200_OK)
-            # res.set_cookie('access', str(refresh.access_token), httponly=True,secure=False, samesite='None')
-            # res.set_cookie('refresh', str(refresh), httponly=True, secure=False, samesite='None')
+            res.set_cookie('access', str(refresh.access_token), httponly=True )
+            res.set_cookie('refresh', str(refresh), httponly=True)
             return res
         return Response({
             "status": False,
-            "message": "Tokens error",
+            "message": "Tokens error"
         },status=status.HTTP_401_UNAUTHORIZED)

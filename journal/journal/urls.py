@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from server.views.reg_views import RegAPIView
+from server.views.workspace_views import WorkspaceAPIView
 from server.views.auth_views import LoginApiView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -28,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/register/', RegAPIView.as_view()),
     path('api/v1/auth/',LoginApiView.as_view()),
+    path('api/v1/workspace/' , WorkspaceAPIView.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
