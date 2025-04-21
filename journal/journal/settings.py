@@ -29,7 +29,7 @@ AUTH_USER_MODEL = 'server.User'
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True 
 CSRF_COOKIE_SECURE = False 
-
+ASGI_APPLICATION = 'journal.asgi.application'
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'server.apps.ServerConfig',
     'corsheaders',
     'rest_framework',
+    'channels',
+    'server',  # Оставляем только это
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,12 @@ TEMPLATES = [
         },
     },
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 WSGI_APPLICATION = 'journal.wsgi.application'
 
@@ -120,6 +127,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+DOMAIN = 'http://localhost:8000'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -138,6 +146,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',  
     ),
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),

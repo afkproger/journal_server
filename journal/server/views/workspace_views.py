@@ -9,7 +9,7 @@ class WorkspaceAPIView(APIView):  # Опечатка в названии кла�
     def get(self, request):
         user = request.user
         return Response({
-            'username': user.username,  # Используем строковое поле, а не объект
-            'email': user.email,        # Другие поля, если нужны
-            'id': user.id               # Пример числового поля
+            'username': user.username,  
+            'email': user.email, 
+            'middle_name': user.middle_name
         })
